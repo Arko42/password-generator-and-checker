@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Key Shield</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db; /* Blue accent */
+            --secondary-color: #e0e0e0; /* Light text for headings */
+            --text-color: #e0e0e0; /* Main text color */
+            --background-color: #212121; /* Dark body background */
+            --card-background: #2c2c2c; /* Slightly lighter dark background for card */
+            --input-background: #3a3a3a; /* Darker background for inputs */
+            --border-color: #555; /* Subtle border color */
+            --divider-color: #444; /* Horizontal rule color */
+            --border-radius: 10px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+        }
+        
+        .container {
+            background: var(--card-background);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3); /* Stronger shadow for dark mode */
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+            border-top: 5px solid var(--primary-color);
+            transform: translateY(-20px);
+            animation: fadeInDown 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color); /* Primary color for main title */
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            border-bottom: 2px solid var(--divider-color);
+            padding-bottom: 10px;
+        }
+
+        form {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 12px;
+            margin-top: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            background: var(--input-background);
+            color: var(--text-color);
+            border-radius: var(--border-radius);
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.5); /* Focus shadow */
+        }
+
+        button {
+            padding: 12px;
+            margin-top: 20px;
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--divider-color);
+            margin: 30px 0;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--input-background); /* Darker background for results */
+            border-left: 5px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            transition: all 0.5s ease;
+            color: var(--text-color);
+        }
+
+        .result p {
+            margin: 0;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .result ul {
+            margin-top: 10px;
+            padding-left: 20px;
+            list-style-type: '👉 ';
+            color: var(--text-color);
+        }
+
+        .result li {
+            margin-bottom: 5px;
+        }
+
+        /* Strength-specific result styles for Dark Mode */
+        .result.weak {
+            border-left-color: #e74c3c; /* Red */
+            background: #4a3030; /* Darker red tint */
+        }
+
+        .result.medium {
+            border-left-color: #f39c12; /* Orange */
+            background: #4a3e30; /* Darker orange tint */
+        }
+
+        .result.strong {
+            border-left-color: #2ecc71; /* Green */
+            background: #304a30; /* Darker green tint */
+        }
+        
+        .result.verystrong {
+            border-left-color: #27ae60; /* Darker Green */
+            background: #2d452f; /* Even darker green tint */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 KEY ~ SHIELD</h1>
+
+        <form method="POST">
+            <h2>Generate a Password</h2>
+            <label for="length">Length:</label>
+            <input type="number" id="length" name="length" min="8" required>
+            <button type="submit" name="generate">Generate</button>
+        </form>
+        {% if generated_password %}
+            <div class="result">
+                <p><strong>Generated Password:</strong> {{ generated_password }}</p>
+            </div>
+        {% endif %}
+
+        <hr>
+
+        <form method="POST">
+            <h2>Check Password Strength</h2>
+            <input type="text" name="password" placeholder="Enter your password" required>
+            <button type="submit" name="check">Check</button>
+        </form>
+        {% if rating %}
+            <div class="result 
+                {% if 'Weak' in rating %}weak
+                {% elif 'Medium' in rating %}medium
+                {% elif 'Strong' in rating and 'Very' not in rating %}strong
+                {% elif 'Very Strong' in rating %}verystrong
+                {% endif %}">
+                <p><strong>Strength:</strong> {{ rating }}</p>
+                <ul>
+                    {% for fb in feedback %}
+                        <li>{{ fb }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
